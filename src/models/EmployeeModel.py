@@ -14,7 +14,7 @@ class EmployeeModel(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(128), nullable=False)
   email = db.Column(db.String(128), unique=True, nullable=False)
-  position = db.Column(db.String(128), nullable=True)
+  position = db.Column(db.String(128), nullable=False)
   created_at = db.Column(db.DateTime)
   modified_at = db.Column(db.DateTime)
   projects = db.relationship('ProjectModel', backref='employees', lazy=True)
@@ -46,11 +46,15 @@ class EmployeeModel(db.Model):
 
   @staticmethod
   def get_all_employees():
-    return UserModel.query.all()
+    return EmployeeModel.query.all()
 
   @staticmethod
   def get_one_employee(id):
-    return UserModel.query.get(id)
+    return EmployeeModel.query.get(id)
+
+  @staticmethod
+  def get_employee_by_email(value):
+    return EmployeeModel.query.filter_by(email=value).first()
 
   
   def __repr(self):
